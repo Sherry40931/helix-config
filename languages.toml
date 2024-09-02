@@ -1,0 +1,30 @@
+[[language]]
+name = "python"
+auto-format = true
+
+[language.formatter]
+command = "bash"
+args = [
+    "-c",
+    """
+    set -eou pipefail
+
+    COMMAND="cat"
+
+    if command -v black &> /dev/null; then
+        COMMAND+=" | black --quiet -"
+    fi
+
+    if command -v isort &> /dev/null; then
+        COMMAND+=" | isort -"
+    fi
+
+    if command -v ruff &> /dev/null; then
+        COMMAND+=" | ruff check --select I --fix -"
+    fi
+
+    echo "$COMMAND" >&2
+
+    eval "$COMMAND"
+    """,
+]
